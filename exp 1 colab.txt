@@ -1,0 +1,41 @@
+import numpy as np 
+c1 = np.array([1, 1, 1, 1]) 
+c2 = np.array([1, -1, 1, -1]) 
+c3 = np.array([1, 1, -1, -1]) 
+c4 = np.array([1, -1, -1, 1]) 
+print("Enter the data bits (use 1 or -1):") 
+d1 = int(input("Enter D1: ")) 
+d2 = int(input("Enter D2: ")) 
+d3 = int(input("Enter D3: ")) 
+d4 = int(input("Enter D4: ")) 
+r1 = c1 * d1 
+r2 = c2 * d2 
+r3 = c3 * d3 
+r4 = c4 * d4 
+resultant_channel = r1 + r2 + r3 + r4 
+print("Resultant Channel:", resultant_channel) 
+Channel = int(input("Enter the station to listen (C1=1, C2=2, C3=3, C4=4): ")) 
+if Channel == 1: 
+rc = c1 
+elif Channel == 2: 
+rc = c2 
+elif Channel == 3: 
+rc = c3 
+elif Channel == 4: 
+rc = c4 
+else: 
+print("Invalid channel selected!") 
+exit() 
+res = np.dot(resultant_channel, rc) 
+data = res / len(rc) 
+print("Recovered Data Bit:", int(data))
+
+Output:  
+Enter the data bits (use 1 or -1): 
+Enter D1: 1 
+Enter D2: -1 
+Enter D3: 1 
+Enter D4: -1 
+Resultant Channel: [0 4 0 0] 
+Enter the station to listen (C1=1, C2=2, C3=3, C4=4): 2 
+Recovered Data Bit: -1

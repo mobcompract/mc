@@ -1,0 +1,25 @@
+clear; clc; 
+N = 1e6; % number of bits or symbols 
+rng(100); % initialize random generator 
+ip = rand(1, N) > 0.5; % generating 0,1 with equal probability 
+s = 2*ip - 1; % BPSK modulation: 0 -> -1, 1 -> +1 
+n = (1/sqrt(2)) * (randn(1, N) + 1j*randn(1, N)); % AWGN noise 
+Eb_N0_dB = -3:10; % range of Eb/N0 values 
+nErr = zeros(size(Eb_N0_dB)); % preallocate error array 
+for ii = 1:length(Eb_N0_dB) 
+y = s + 10^(-Eb_N0_dB(ii)/20) * n; 
+ipHat = real(y) > 0; 
+nErr(ii) = sum(ip ~= ipHat); 
+end 
+simBer = nErr / N; % simulated BER 
+theoryBer = 0.5 * erfc(sqrt(10.^(Eb_N0_dB/10))); % theoretical BER 
+figure; 
+semilogy(Eb_N0_dB, theoryBer, 'b.-', 'LineWidth', 1.5); 
+hold on; 
+semilogy(Eb_N0_dB, simBer, 'mx-', 'LineWidth', 1.5); 
+axis([-3 10 1e-5 0.5]); 
+grid on; 
+legend('Theory', 'Simulation'); 
+xlabel('Eb/N0 (dB)'); 
+ylabel('Bit Error Rate (BER)'); 
+title('Bit Error Probability Curve for BPSK');
